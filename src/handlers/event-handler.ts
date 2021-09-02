@@ -1,5 +1,5 @@
 import { readdirSync } from "fs";
-import { bot } from "../bot.js";
+import { bot } from "@src/index.js";
 
 export class EventHandler {
   async init() {

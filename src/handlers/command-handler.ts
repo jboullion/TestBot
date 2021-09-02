@@ -1,3 +1,4 @@
+import { Message } from "discord.js";
 import { readdirSync } from "fs";
 
 export class CommandHandler {
@@ -18,12 +19,11 @@ export class CommandHandler {
     console.log(`${filenames.length - 1} commands were loaded`);
   }
 
-  async handle(prefix, msg) {
+  async handle(prefix: string, msg: Message) {
     try {
       const words = msg.content.slice(prefix.length).split(" ");
       await this.commands.get(words[0])?.execute(msg, ...words.slice(1));
     } catch (e) {
-      //console.log("Error: ", e);
       await msg.reply(`⚠ Error: ${e.message}`);
     }
   }

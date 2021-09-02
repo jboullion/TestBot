@@ -1,7 +1,8 @@
 export default class {
-  name = "";
+  on = "";
+  commandHandler = null;
 
-  execute(msg, ...args) {
+  invoke(...args) {
     throw new TypeError("Not Implemented");
   }
 }
