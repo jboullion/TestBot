@@ -1,4 +1,7 @@
 import { Client, Intents } from "discord.js";
+import { config } from "dotenv";
+
+config({ path: ".env" });
 
 const bot = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
@@ -10,4 +13,4 @@ bot.on("message", async (msg) => {
   await msg.reply("Hi");
 });
 
-bot.login("BOT_TOKEN");
+bot.login(process.env.BOT_TOKEN);
