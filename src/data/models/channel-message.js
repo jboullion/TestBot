@@ -1,11 +1,8 @@
 import Sequelize from 'sequelize';
 import { sequelize } from '../sequelize.js';
 
-export const ChannelMessages = sequelize.define('channel_messages', {
+export const ChannelMessage = sequelize.define('channel_messages', {
 	channel_id: {
-		type: Sequelize.STRING,
-	},
-	name: {
 		type: Sequelize.STRING,
 	},
 	date: {
@@ -14,7 +11,7 @@ export const ChannelMessages = sequelize.define('channel_messages', {
 	},
 	usage_count: {
 		type: Sequelize.INTEGER,
-		defaultValue: 0,
+		defaultValue: 1,
 		allowNull: false,
 	},
 },
