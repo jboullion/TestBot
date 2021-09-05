@@ -8,6 +8,8 @@ import { Channel } from "../../data/models/channel.js";
 
 import { sequelize } from '../../data/sequelize.js';
 import moment from "moment";
+import axios from "axios";
+
 
 export default class extends Event {
   on = "message";
@@ -21,28 +23,44 @@ export default class extends Event {
   async invoke(msg) {
     // Don't reply to bots
     if (!msg.guild || msg.author.bot) return;
+    
+    const date = moment().format("YYYY-MM-DD");
 
     try {
-      // Track all messages on all channels. Make sure we create / find each channel in it's own table. Then, update the channel_messages table usage_count and date
-      Channel.findOrCreate({
+      // CREATE / FIND channel
+      const channel = await Channel.findOrCreate({
         where: { channel_id: msg.channel.id },
         defaults: {
           channel_id: msg.channel.id,
           name: msg.channel.name
         }
-      })
-      .then(async channel => {
-        const date = moment().format("YYYY-MM-DD");
-        const channelMessages = await ChannelMessage.findOne({ where: { channel_id: msg.channel.id, date: date } });
-        
-        if (channelMessages) {
-          channelMessages.increment('usage_count');
-        }else{
-          ChannelMessage.create({
-            channel_id: msg.channel.id
+      });
+
+      // INCREMENT our channel message count
+      const channelMessages = await ChannelMessage.findOne({ where: { channel_id: msg.channel.id, date: date } });
+      if (channelMessages) {
+        channelMessages.increment('usage_count');
+      }else{
+        ChannelMessage.create({
+          channel_id: msg.channel.id
+        });
+      }
+      
+      // POST this message to the wordpress site
+      if(msg.channel.id === process.env.ANNOUNCEMENTS_ID){
+        axios.post(`https://${process.env.WP_DOMAIN}/wp-json/wp/v2/posts`, 
+          {
+            title: msg.author.username,
+            content: msg.content
+          },
+          {
+            auth: {
+              username: process.env.WP_USER,
+              password: process.env.WP_PASSWORD
+            }
           });
-        }
-      })
+      }
+
     }catch(e) {
       console.log(e);
     }
