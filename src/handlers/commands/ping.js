@@ -4,7 +4,7 @@ export default class extends Command {
   name = "ping";
 
   async execute(msg) {
-    console.log("Ping Test!");
+    // console.log("Ping Test!");
     await msg.reply("Pong!");
   }
 }
