@@ -13,6 +13,7 @@ export default class extends Event {
 
   async invoke() {
     console.log(`${bot.user.username} is online`);
+    bot.user.setActivity('Everything', { type: 'WATCHING'});
 
     await this.commandHandler.init();
   }
