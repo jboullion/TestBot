@@ -4,6 +4,7 @@ import Deps from "../../utils/deps.js";
 //import { Guilds } from "../../data/guilds.js";
 import { ChannelMessages } from "../../data/models/channel-messages.js";
 import { sequelize } from '../../data/sequelize.js';
+import moment from "moment";
 
 export default class extends Event {
   on = "message";
@@ -17,21 +18,18 @@ export default class extends Event {
   async invoke(msg) {
     // Don't reply to bots
     if (!msg.guild || msg.author.bot) return;
-
-    const channel = await ChannelMessages.findOne({ where: { name: msg.channel.name } });
+    
+    const date = moment().format("YYYY-MM-DD");
+    const channel = await ChannelMessages.findOne({ where: { channel_id: msg.channel.id, date: date } });
     
     if (channel) {
       console.log('updating channel: '+msg.channel.name);
-      channel.update({
-        last_message: sequelize.literal('CURRENT_TIMESTAMP'),
-        usage_count: sequelize.literal('usage_count + 1')
-      });
-      //channel.increment('usage_count');
+      channel.increment('usage_count');
     }else{
       console.log('creating channel: '+msg.channel.name);
       const channel = await ChannelMessages.create({
+        channel_id: msg.channel.id,
         name: msg.channel.name,
-        last_message: sequelize.literal('CURRENT_TIMESTAMP'),
         usage_count: 1,
       });
     }

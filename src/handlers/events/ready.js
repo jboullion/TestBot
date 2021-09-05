@@ -22,7 +22,7 @@ export default class extends Event {
     console.log(`${bot.user.username} is online`);
     bot.user.setActivity('Everything', { type: 'WATCHING'});
 
-    ChannelMessages.sync();
+    ChannelMessages.sync({ force: true });
 
     // const channel = bot.channels.cache.get('866066557331570708');
     // try {
