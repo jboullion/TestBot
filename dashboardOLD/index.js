@@ -4,9 +4,14 @@ import { createRequire } from "module"; // Bring in the ability to create the 'r
 const require = createRequire(import.meta.url); // construct the require method
 const { clientId, clientSecret, port } = require('./config.json');
 
+import { setCookie, getCookie } from './utils.js';
+
 const app = express();
+const cookieName = 'discord';
 
 app.get('/', async ({ query }, response) => {
+
+	const discordCookie = getCookie(cookieName)
 	const { code } = query;
 
 	if (code) {
@@ -27,20 +32,22 @@ app.get('/', async ({ query }, response) => {
 			});
 
 			const oauthData = await oauthResult.json();
-			console.log(oauthData);
-			
+
+			setCookie(cookieName, oauthData, 7);
+
 			// https://discord.com/developers/docs/resources/user#get-current-user
 			// /channels/{channel.id}/messages?after={messageID} // get channel messages
 			// /channels/{channel.id}/messages/{message.id} // get single message
 			// /guilds/{guild.id}/members
-			const userResult = await fetch('https://discord.com/api/users/@me/guilds', {
-				headers: {
-					authorization: `${oauthData.token_type} ${oauthData.access_token}`,
-				},
-			});
-			// TODO: Check if user has owner flag set on guilds. If so maybe display the guilds the user is the owner of?
+			// /guilds/{guild.id}/members/search
+			// const userResult = await fetch('https://discord.com/api/users/@me', {
+			// 	headers: {
+			// 		authorization: `${oauthData.token_type} ${oauthData.access_token}`,
+			// 	},
+			// });
+			// // TODO: Check if user has owner flag set on guilds. If so maybe display the guilds the user is the owner of?
 
-			console.log(await userResult.json());
+			// console.log(await userResult.json());
 		} catch (error) {
 			// NOTE: An unauthorized token will not throw an error;
 			// it will return a 401 Unauthorized response in the try block above
