@@ -30,11 +30,15 @@ app.get('/', async ({ query }, response) => {
 			console.log(oauthData);
 			
 			// https://discord.com/developers/docs/resources/user#get-current-user
-			const userResult = await fetch('https://discord.com/api/users/@me', {
+			// /channels/{channel.id}/messages?after={messageID} // get channel messages
+			// /channels/{channel.id}/messages/{message.id} // get single message
+			// /guilds/{guild.id}/members
+			const userResult = await fetch('https://discord.com/api/users/@me/guilds', {
 				headers: {
 					authorization: `${oauthData.token_type} ${oauthData.access_token}`,
 				},
 			});
+			// TODO: Check if user has owner flag set on guilds. If so maybe display the guilds the user is the owner of?
 
 			console.log(await userResult.json());
 		} catch (error) {
