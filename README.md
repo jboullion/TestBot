@@ -11,12 +11,13 @@ Add all relevent config variables to the .env file
 ## Start Bot
 
 ```sh
-$ node ./src/bot.js
+node ./src/bot.js
 ```
 
 
-### Requirements
-WordPress Plugin: https://github.com/WP-API/Basic-Auth
+### External Requirements
+[WordPress Basic Auth Plugin](https://github.com/WP-API/Basic-Auth)
+[Discord Bot](https://discord.com/developers/applications)
 
 
 ### Using
