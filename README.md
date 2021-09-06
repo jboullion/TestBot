@@ -16,8 +16,8 @@ node ./src/bot.js
 
 
 ### External Requirements
-[WordPress Basic Auth Plugin](https://github.com/WP-API/Basic-Auth)
-[Discord Bot](https://discord.com/developers/applications)
+* [WordPress Basic Auth Plugin](https://github.com/WP-API/Basic-Auth)
+* [Discord Bot](https://discord.com/developers/applications)
 
 
 ### Using
