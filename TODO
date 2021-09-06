@@ -1,0 +1,3 @@
+Instead of creating channels in our SQLite based on sent messages, should we just populate the Channels table with the entire list of channels? Look into DiscordJS client.guilds.channels.
+Reference: https://stackoverflow.com/questions/47947782/discordjs-fetch-all-channelsid-from-serverid/47954829
+
