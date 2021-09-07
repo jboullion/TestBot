@@ -7,6 +7,7 @@ const require = createRequire(import.meta.url); // construct the require method
 
 config({ path: ".env" });
 
+// https://discord.com/developers/docs/topics/gateway#gateway-intents
 export const bot = Deps.add(
   Client,
   new Client({ intents: [Intents.FLAGS.GUILDS] })

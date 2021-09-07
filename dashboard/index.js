@@ -3,15 +3,19 @@ import fetch from 'node-fetch';
 import { createRequire } from "module"; // Bring in the ability to create the 'require' method
 const require = createRequire(import.meta.url); // construct the require method
 const { clientId, clientSecret, port } = require('./config.json');
-
-import { setCookie, getCookie } from './utils.js';
+import path from 'path';
+const __dirname = path.resolve();
+//import { setCookie, getCookie } from './utils.js';
 
 const app = express();
-const cookieName = 'discord';
+// const cookieName = 'discord';
+
+app.use(express.static(`${__dirname}/assets`));
+app.locals.basedir = `${__dirname}/assets`;
 
 app.get('/', async ({ query }, response) => {
 
-	const discordCookie = getCookie(cookieName)
+	//const discordCookie = getCookie(cookieName)
 	const { code } = query;
 
 	if (code) {
@@ -33,7 +37,7 @@ app.get('/', async ({ query }, response) => {
 
 			const oauthData = await oauthResult.json();
 
-			setCookie(cookieName, oauthData, 7);
+			//setCookie(cookieName, oauthData, 7);
 
 			// https://discord.com/developers/docs/resources/user#get-current-user
 			// /channels/{channel.id}/messages?after={messageID} // get channel messages
