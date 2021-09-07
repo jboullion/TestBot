@@ -10,8 +10,11 @@ const __dirname = path.resolve();
 const app = express();
 const cookieName = 'discord';
 
+// Make our assets folder available to node.js
 app.use(express.static(`${__dirname}/assets`));
 app.locals.basedir = `${__dirname}/assets`;
+
+// https://www.tutorialspoint.com/expressjs/expressjs_cookies.htm
 app.use(cookieParser());
 
 app.get('/', async (request, response) => {
