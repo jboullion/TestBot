@@ -1,22 +1,25 @@
 import express from 'express';
 import fetch from 'node-fetch';
 import { createRequire } from "module"; // Bring in the ability to create the 'require' method
+import path from 'path';
+import cookieParser from 'cookie-parser';
+
 const require = createRequire(import.meta.url); // construct the require method
 const { clientId, clientSecret, port } = require('./config.json');
-import path from 'path';
 const __dirname = path.resolve();
-//import { setCookie, getCookie } from './utils.js';
-
 const app = express();
-// const cookieName = 'discord';
+const cookieName = 'discord';
 
 app.use(express.static(`${__dirname}/assets`));
 app.locals.basedir = `${__dirname}/assets`;
+app.use(cookieParser());
 
-app.get('/', async ({ query }, response) => {
+app.get('/', async (request, response) => {
 
 	//const discordCookie = getCookie(cookieName)
-	const { code } = query;
+	console.log('Cookies: ', request.cookies[cookieName])
+	response.cookie(cookieName, 'Discord Cookie');
+	const { code } = request.query;
 
 	if (code) {
 		try {
